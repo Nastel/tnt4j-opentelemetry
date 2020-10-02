@@ -18,9 +18,12 @@ package com.jkoolcloud.tnt4j.source.impl.opentelemetry;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 import com.jkoolcloud.tnt4j.TrackingLogger;
 
+import com.jkoolcloud.tnt4j.core.Snapshot;
+import com.jkoolcloud.tnt4j.tracker.TrackingEvent;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
@@ -46,7 +49,22 @@ public class TNTMetricExporter implements MetricExporter {
 	}
 
 	private void export(MetricData metric) {
-	}
+        TrackingEvent trackingEvent = logger.newEvent(metric.getDescriptor().getName(), "");
+        trackingEvent.getOperation().setResource(String.valueOf(metric.getResource()));
+
+        Iterator<MetricData.Point> iterator = metric.getPoints().iterator();
+
+        while(iterator.hasNext()) {
+            MetricData.Point point = iterator.next();
+            Snapshot snapshot = logger.newSnapshot("Point");
+
+            point.getLabels().forEach((key, value) -> snapshot.add(key, value));
+
+
+        }
+
+
+    }
 
 	@Override
 	public CompletableResultCode flush() {
