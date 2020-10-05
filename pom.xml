@@ -89,6 +89,7 @@
             <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.jkoolcloud</groupId>
             <artifactId>tnt4j</artifactId>

@@ -37,7 +37,7 @@ public class TNTSpanExporter implements SpanExporter {
 	 */
 	private TrackingLogger logger;
 
-	private TNTSpanExporter(String source) {
+	public TNTSpanExporter(String source) {
 		this.logger = TrackingLogger.getInstance(source);
 	}
 

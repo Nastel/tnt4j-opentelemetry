@@ -36,7 +36,7 @@ public class TNTMetricExporter implements MetricExporter {
 	private TrackingLogger logger;
 
 
-	private TNTMetricExporter(String source) {
+	public TNTMetricExporter(String source) {
 		this.logger = TrackingLogger.getInstance(source);
 	}
 
