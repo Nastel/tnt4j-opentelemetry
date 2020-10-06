@@ -18,17 +18,14 @@ package com.jkoolcloud.tnt4j.source.impl.opentelemetry;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 import com.jkoolcloud.tnt4j.TrackingLogger;
-
 import com.jkoolcloud.tnt4j.core.Property;
 import com.jkoolcloud.tnt4j.tracker.TrackingEvent;
+
 import io.opentelemetry.common.ReadableAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.data.SpanData.Event;
-import io.opentelemetry.sdk.trace.data.SpanData.Link;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 public class TNTSpanExporter implements SpanExporter {
