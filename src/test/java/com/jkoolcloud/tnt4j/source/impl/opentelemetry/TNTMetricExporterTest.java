@@ -11,7 +11,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Status;
 import io.opentelemetry.trace.Tracer;
 import org.junit.jupiter.api.Test;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
@@ -25,7 +24,8 @@ class TNTMetricExporterTest {
     @Test
     public void metricExporterTest() {
         Tracer tracer = OpenTelemetry.getTracer("Test");
-        TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
+
+        TracerSdkProvider tracerProvider =TracerSdkProvider.builder().build();
 
         tracerProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(loggingExporter).build());
         Meter sampleMeter =
@@ -42,8 +42,7 @@ class TNTMetricExporterTest {
         try (Scope scope = tracer.withSpan(span)) {
             diskSpaceCounter.add(1);
         } catch (Exception e) {
-            Status status = Status.UNKNOWN.withDescription("Error while finding file");
-            span.setStatus(status);
+
         } finally {
             span.end();
         }

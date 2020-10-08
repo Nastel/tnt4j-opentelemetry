@@ -24,6 +24,8 @@ import com.jkoolcloud.tnt4j.TrackingLogger;
 
 import com.jkoolcloud.tnt4j.core.Property;
 import com.jkoolcloud.tnt4j.tracker.TrackingEvent;
+import io.opentelemetry.common.AttributeConsumer;
+import io.opentelemetry.common.AttributeKey;
 import io.opentelemetry.common.ReadableAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
@@ -47,12 +49,19 @@ public class TNTSpanExporter implements SpanExporter {
             TrackingEvent trackingEvent = logger.newEvent(span.getName(), "");
             ReadableAttributes attributes = span.getAttributes();
 
-            attributes.forEach((key, value) ->trackingEvent.getOperation().addProperty(new Property(key, value)));
+            attributes.forEach(new AttributeConsumer() {
+                                   @Override
+                                   public <T> void consume(AttributeKey<T> key, T value) {
+                                       trackingEvent.getOperation().addProperty(new Property(key.getKey(), value));
+
+                                   }
+                               }
+            );
 
             trackingEvent.getOperation().start(span.getStartEpochNanos()/1000);
             trackingEvent.getOperation().stop(span.getEndEpochNanos()/1000);
-            trackingEvent.setCorrelator(span.getTraceId().toLowerBase16());
-            trackingEvent.setCorrelator(span.getSpanId().toLowerBase16());
+            trackingEvent.setCorrelator(span.getTraceId());
+            trackingEvent.setCorrelator(span.getSpanId());
 
 		}
 		return CompletableResultCode.ofSuccess();

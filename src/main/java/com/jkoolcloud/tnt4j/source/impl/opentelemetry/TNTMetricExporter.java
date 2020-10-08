@@ -49,7 +49,7 @@ public class TNTMetricExporter implements MetricExporter {
 	}
 
 	private void export(MetricData metric) {
-        TrackingEvent trackingEvent = logger.newEvent(metric.getDescriptor().getName(), "");
+        TrackingEvent trackingEvent = logger.newEvent(metric.getName(), "");
         trackingEvent.getOperation().setResource(String.valueOf(metric.getResource()));
 
         Iterator<MetricData.Point> iterator = metric.getPoints().iterator();
@@ -59,7 +59,7 @@ public class TNTMetricExporter implements MetricExporter {
             Snapshot snapshot = logger.newSnapshot("Point");
 
             point.getLabels().forEach((key, value) -> snapshot.add(key, value));
-
+            logger.tnt(trackingEvent);
 
         }
 
