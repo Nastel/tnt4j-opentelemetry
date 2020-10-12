@@ -30,10 +30,10 @@ and TNT.
 
 
 
-| OpenTelemetry            | TNT              | Notes                                                                                         |
-| ------------------------ | ---------------- | --------------------------------------------------------------------------------------------- |
-| Metric.Name              | EventName        |                                                                                               |
-| Metric.Points            | Snapshots        |                                                                                               |
-| Metric.Points.EpohNanos  | Snapshot.Timestamp|                                                                                               |
+| OpenTelemetry            | TNT                | Notes                                                                                         |
+| ------------------------ | ------------------ | --------------------------------------------------------------------------------------------- |
+| Metric.Name              | EventName          |                                                                                               |
+| Metric.Points            | Snapshots          |                                                                                               |
+| Metric.Points.EpohNanos  | Snapshot.Timestamp |                                                                                               |
 | Metric.Labels            | Snapshot.Properties|                                                                                               |
 
