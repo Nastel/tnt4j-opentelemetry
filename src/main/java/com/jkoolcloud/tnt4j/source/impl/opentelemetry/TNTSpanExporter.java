@@ -58,7 +58,7 @@ public class TNTSpanExporter implements SpanExporter {
             trackingEvent.getOperation().stop(span.getEndEpochNanos()/1000);
             trackingEvent.setCorrelator(span.getTraceId());
             trackingEvent.setCorrelator(span.getSpanId());
-
+            logger.tnt(trackingEvent);
 		}
 		return CompletableResultCode.ofSuccess();
 	}

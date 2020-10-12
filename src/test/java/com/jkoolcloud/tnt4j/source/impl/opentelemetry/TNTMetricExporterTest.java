@@ -1,21 +1,16 @@
 package com.jkoolcloud.tnt4j.source.impl.opentelemetry;
 
 import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.common.Labels;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.metrics.AsynchronousInstrument;
 import io.opentelemetry.metrics.DoubleCounter;
-import io.opentelemetry.metrics.LongValueObserver;
 import io.opentelemetry.metrics.Meter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
-import org.junit.jupiter.api.Test;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class TNTMetricExporterTest {
 

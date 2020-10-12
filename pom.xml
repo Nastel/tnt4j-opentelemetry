@@ -4,7 +4,7 @@
 
     <groupId>com.jkoolcloud</groupId>
     <artifactId>tnt4j-opentelemetry</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>tnt4j-opentelemetry</name>
@@ -71,8 +71,8 @@
 
         <build.assemblies.attach>false</build.assemblies.attach>
 
-        <tnt4j.version>3.10</tnt4j.version>
-
+        <tnt4j.jesl.version>0.10-SNAPSHOT</tnt4j.jesl.version>
+        <opentelemetry.version>0.9.0-SNAPSHOT</opentelemetry.version>
 
     </properties>
 
@@ -84,36 +84,29 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.jkoolcloud</groupId>
+            <artifactId>jesl</artifactId>
+            <version>${tnt4j.jesl.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-api -->
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporters-logging</artifactId>
-            <version>0.8.0</version>
+            <version>${opentelemetry.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.jkoolcloud</groupId>
-            <artifactId>tnt4j</artifactId>
-            <version>2.13.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>0.11.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
     <profiles>
