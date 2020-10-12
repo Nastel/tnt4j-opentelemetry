@@ -13,7 +13,7 @@ and TNT.
 
 | OpenTelemetry            | TNT              | Notes                                                                                         |
 | ------------------------ | ---------------- | --------------------------------------------------------------------------------------------- |
-| Span.TraceID             | Correlator       | XRay will correlate spans to common actinity.                                                 |
+| Span.TraceID             | Correlator       | TNT will correlate spans to common activity.                                                 |
 | Span.ParentID            |                  |                                                                                               |
 | Span.SpanID              |                  |                                                                                               |
 | Span.TraceState          |                  |                                                                                               |
