@@ -26,8 +26,13 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.metrics.InstrumentType;
 import io.opentelemetry.sdk.metrics.data.AggregationTemporality;
 import io.opentelemetry.sdk.metrics.data.Data;
+import io.opentelemetry.sdk.metrics.data.DoublePointData;
+import io.opentelemetry.sdk.metrics.data.ExponentialHistogramPointData;
+import io.opentelemetry.sdk.metrics.data.HistogramPointData;
+import io.opentelemetry.sdk.metrics.data.LongPointData;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.data.PointData;
+import io.opentelemetry.sdk.metrics.data.SummaryPointData;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 
 public class TNTMetricExporter implements MetricExporter {
@@ -45,7 +50,9 @@ public class TNTMetricExporter implements MetricExporter {
 	public CompletableResultCode export(Collection<MetricData> metrics) {
 		for (MetricData metric : metrics) {
 			Snapshot snapshot = exportToSnapshot(metric);
-			logger.tnt(snapshot);
+			if (snapshot.size() > 0) {
+				logger.tnt(snapshot);
+			}
 		}
 		return CompletableResultCode.ofSuccess();
 	}
@@ -58,9 +65,37 @@ public class TNTMetricExporter implements MetricExporter {
 
 	private void extractData(Snapshot snap, Data<?> data) {
 		Collection<? extends PointData> points = data.getPoints();
+		int count = 0;
+		String prefix = "Point-" + count + "/";
+
 		for (PointData point : points) {
-			// TBD: processing
-			point.getAttributes();
+			if (point instanceof LongPointData) {
+				LongPointData apoint = (LongPointData) point;
+				snap.add(prefix + "value", apoint.getValue(), "long");
+			}
+			else if (point instanceof DoublePointData) {
+				DoublePointData apoint = (DoublePointData) point;
+				snap.add(prefix + "value", apoint.getValue(), "double");				
+			}
+			else if (point instanceof SummaryPointData) {
+				SummaryPointData apoint = (SummaryPointData) point;
+				snap.add(prefix + "sum", apoint.getSum(), "double");								
+			}
+			else if (point instanceof HistogramPointData) {
+				HistogramPointData apoint = (HistogramPointData) point;
+				snap.add(prefix + "sum", apoint.getSum(), "double");												
+				snap.add(prefix + "count", apoint.getCount() , "long");												
+				snap.add(prefix + "max", apoint.getMax(), "double");												
+				snap.add(prefix + "min", apoint.getMin(), "double");												
+			}
+			else if (point instanceof ExponentialHistogramPointData) {
+				ExponentialHistogramPointData apoint = (ExponentialHistogramPointData) point;
+				snap.add(prefix + "sum", apoint.getSum(), "double");												
+				snap.add(prefix + "count", apoint.getCount(), "long");												
+				snap.add(prefix + "max", apoint.getMax(), "double");												
+				snap.add(prefix + "min", apoint.getMin(), "double");												
+			}
+			count++;
 		}
 	}
 
