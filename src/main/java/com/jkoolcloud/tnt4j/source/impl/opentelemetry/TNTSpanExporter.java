@@ -20,11 +20,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.jkoolcloud.tnt4j.TrackingLogger;
-import com.jkoolcloud.tnt4j.core.Property;
 import com.jkoolcloud.tnt4j.tracker.TrackingEvent;
-import io.opentelemetry.common.AttributeConsumer;
-import io.opentelemetry.common.AttributeKey;
-import io.opentelemetry.common.ReadableAttributes;
+
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -42,22 +39,10 @@ public class TNTSpanExporter implements SpanExporter {
 	@Override
 	public CompletableResultCode export(Collection<SpanData> spans) {
 		for (SpanData span: spans) {
-            TrackingEvent trackingEvent = logger.newEvent(span.getName(), "");
-            ReadableAttributes attributes = span.getAttributes();
-
-            attributes.forEach(new AttributeConsumer() {
-                                   @Override
-                                   public <T> void consume(AttributeKey<T> key, T value) {
-                                       trackingEvent.getOperation().addProperty(new Property(key.getKey(), value));
-
-                                   }
-                               }
-            );
-
+            TrackingEvent trackingEvent = logger.newEvent(span.getName(), span.toString());
             trackingEvent.getOperation().start(span.getStartEpochNanos()/1000);
             trackingEvent.getOperation().stop(span.getEndEpochNanos()/1000);
-            trackingEvent.setCorrelator(span.getTraceId());
-            trackingEvent.setCorrelator(span.getSpanId());
+            trackingEvent.setCorrelator(span.getSpanId(), span.getTraceId());
             logger.tnt(trackingEvent);
 		}
 		return CompletableResultCode.ofSuccess();
@@ -84,18 +69,5 @@ public class TNTSpanExporter implements SpanExporter {
 	public TNTSpanExporter open() throws IOException {
 		logger.open();
 		return this;
-	}
-
-	public static class Builder {
-		String appName;
-		
-		public Builder(String appName) {
-			this.appName = appName;
-		}
-		
-		public TNTSpanExporter build() throws IOException {
-			TNTSpanExporter exporter = new TNTSpanExporter(appName);
-			return exporter.open();
-		}
 	}
 }

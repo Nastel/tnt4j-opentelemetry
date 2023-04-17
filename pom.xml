@@ -71,8 +71,9 @@
 
         <build.assemblies.attach>false</build.assemblies.attach>
 
-        <tnt4j.jesl.version>0.10-SNAPSHOT</tnt4j.jesl.version>
-        <opentelemetry.version>0.9.0-SNAPSHOT</opentelemetry.version>
+        <tnt4j.jesl.version>0.10.3</tnt4j.jesl.version>
+        <opentelemetry.version>1.25.0</opentelemetry.version>
+		<opentelemetry.exporters.logging.version>0.9.1</opentelemetry.exporters.logging.version>
 
     </properties>
 
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>com.jkoolcloud</groupId>
             <artifactId>jesl</artifactId>
-            <version>0.10-SNAPSHOT</version>
+            <version>${tnt4j.jesl.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-api -->
         <dependency>
@@ -104,7 +105,7 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporters-logging</artifactId>
-            <version>${opentelemetry.version}</version>
+            <version>${opentelemetry.exporters.logging.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
